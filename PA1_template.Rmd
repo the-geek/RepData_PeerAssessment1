@@ -2,13 +2,13 @@
 
 
 ## Loading and preprocessing the data
-```{r}
+```{r loading and preprocessing}
 activity <- read.csv(unzip("activity.zip"))
 activity$date <- as.Date(activity$date,"%Y-%m-%d")
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
+```{r daily number of steps}
 # Split the activities per day
 days <- cut(activity$date,"day")
 daily.activity <- split(activity,days)
@@ -26,7 +26,7 @@ print(paste("Total daily steps mean =",steps.mean,", median =",steps.median))
 
 
 ## What is the average daily activity pattern?
-```{r}
+```{r daily activity pattern}
 # Split the data by the 5-minutes interval across all days
 activity.5min <- split(activity, activity$interval)
 
@@ -39,7 +39,7 @@ max.value <- mean.5min[which.max(mean.5min)]
 The interval with maximum number of steps is `r max.interval`, with average steps = `r max.value`
 
 ## Imputing missing values
-``` {r}
+``` {r imputing missing values}
 # Get the rows with incomplete cases i.e. has NA
 incomplete <- activity[!complete.cases(activity),]
 na.count <- nrow(incomplete)
