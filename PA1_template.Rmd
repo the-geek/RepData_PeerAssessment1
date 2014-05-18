@@ -2,16 +2,41 @@
 
 
 ## Loading and preprocessing the data
-
-
+```{r}
+activity <- read.csv(unzip("activity.zip"))
+activity$date <- as.Date(activity$date,"%Y-%m-%d")
+```
 
 ## What is mean total number of steps taken per day?
+```{r}
+# Split the activities per day
+days <- cut(activity$date,"day")
+daily.activity <- split(activity,days)
 
+# Calculate and plot the daily total steps
+steps.sum <- sapply(daily.activity,function(x){sum(x$steps,na.rm=TRUE)})
+hist(steps.sum,breaks=10,main="Total Daily Steps",xlab="Daily steps")
+
+# Report mean and median total daily steps
+steps.mean <- round(mean(steps.sum))
+steps.median <- median(steps.sum)
+
+print(paste("Total daily steps mean =",steps.mean,", median =",steps.median))
+```
 
 
 ## What is the average daily activity pattern?
+```{r}
+# Split the data by the 5-minutes interval across all days
+activity.5min <- split(activity, activity$interval)
 
-
+# Calculate and plot the average steps per every 5-minutes interval
+mean.5min <- sapply(activity.5min,function(x) { mean(x$steps,na.rm=T)})
+plot(unique(activity$interval), mean.5min, type="l",main="Daily Activity Pattern",xlab="5-minutes interval",ylab="Average Steps")
+max.interval <- names(mean.5min[which.max(mean.5min)])
+max.value <- round(mean.5min[which.max(mean.5min)])
+print(paste("The interval with maximum number of steps is ",max.interval," with average steps =",max.value))
+```
 
 ## Imputing missing values
 
