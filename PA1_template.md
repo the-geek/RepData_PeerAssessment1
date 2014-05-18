@@ -23,7 +23,14 @@ steps.sum <- sapply(daily.activity, function(x) {
 hist(steps.sum, breaks = 10, main = "Total Daily Steps", xlab = "Daily steps")
 ```
 
-![plot of chunk daily number of steps](figure/daily_number_of_steps.png) 
+![plot of chunk daily number of steps](figure/daily_number_of_steps1.png) 
+
+```r
+barplot(steps.sum, names.arg = names(steps.sum), main = "Total steps for each day", 
+    xlab = "Date", ylab = "Total number of steps")
+```
+
+![plot of chunk daily number of steps](figure/daily_number_of_steps2.png) 
 
 ```r
 
@@ -107,7 +114,14 @@ hist(new.steps.sum, breaks = 10, main = "Total Daily Steps with Imputed Values",
     xlab = "Daily steps")
 ```
 
-![plot of chunk imputing missing values](figure/imputing_missing_values.png) 
+![plot of chunk imputing missing values](figure/imputing_missing_values1.png) 
+
+```r
+barplot(new.steps.sum, names.arg = names(new.steps.sum), main = "Total steps for each day", 
+    xlab = "Date", ylab = "Total number of steps")
+```
+
+![plot of chunk imputing missing values](figure/imputing_missing_values2.png) 
 
 ```r
 

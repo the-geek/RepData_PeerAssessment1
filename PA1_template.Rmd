@@ -16,6 +16,7 @@ daily.activity <- split(activity,days)
 # Calculate and plot the daily total steps
 steps.sum <- sapply(daily.activity,function(x){sum(x$steps,na.rm=TRUE)})
 hist(steps.sum,breaks=10,main="Total Daily Steps",xlab="Daily steps")
+barplot(steps.sum,names.arg=names(steps.sum),main="Total steps for each day",xlab="Date",ylab="Total number of steps")
 
 # Report mean and median total daily steps
 steps.mean <- round(mean(steps.sum))
@@ -73,6 +74,7 @@ activity.complete[is.na(activity$steps),] <- incomplete # now already completed
 
 new.steps.sum <- sapply(split(activity.complete,days),function(x){sum(x$steps)})
 hist(new.steps.sum,breaks=10,main="Total Daily Steps with Imputed Values",xlab="Daily steps")
+barplot(new.steps.sum,names.arg=names(new.steps.sum),main="Total steps for each day",xlab="Date",ylab="Total number of steps")
 
 # Report mean and median total daily steps
 new.steps.mean <- round(mean(new.steps.sum))
@@ -81,7 +83,7 @@ new.steps.median <- median(new.steps.sum)
 print(paste("After imputing missing values, the total daily steps mean =",new.steps.mean,", median =",new.steps.median))
 ```
 
-It is clear that after imputing missing values the total number of steps increased particularly the daily total steps mean increased by **`r new.steps.mean - steps.mean`** and the median increased by **`r new.steps.median - steps.median`** steps. Also, the histogram shape is more close to the normal distribution.
+It is clear that after imputing missing values the total number of steps increased particularly the daily total steps mean increased by **`r new.steps.mean - steps.mean`** and the median increased by **`r new.steps.median - steps.median`** steps. Also, the histogram shape is more close to the normal distribution and some days that were completely missing in the original data set, they now have values as shown in the barplot
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
