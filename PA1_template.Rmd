@@ -31,15 +31,43 @@ print(paste("Total daily steps mean =",steps.mean,", median =",steps.median))
 activity.5min <- split(activity, activity$interval)
 
 # Calculate and plot the average steps per every 5-minutes interval
-mean.5min <- sapply(activity.5min,function(x) { mean(x$steps,na.rm=T)})
+mean.5min <- sapply(activity.5min,function(x) { round(mean(x$steps,na.rm=T))})
 plot(unique(activity$interval), mean.5min, type="l",main="Daily Activity Pattern",xlab="5-minutes interval",ylab="Average Steps")
 max.interval <- names(mean.5min[which.max(mean.5min)])
-max.value <- round(mean.5min[which.max(mean.5min)])
-print(paste("The interval with maximum number of steps is ",max.interval," with average steps =",max.value))
+max.value <- mean.5min[which.max(mean.5min)]
 ```
+The interval with maximum number of steps is `r max.interval`, with average steps = `r max.value`
 
 ## Imputing missing values
+``` {r}
+# Get the rows with incomplete cases i.e. has NA
+incomplete <- activity[!complete.cases(activity),]
+na.count <- nrow(incomplete)
 
+# Create a new data.frame from activity
+activity.complete <- activity
+
+# Get intervals with incomplete data
+intervals <- unique(incomplete$interval)
+
+# Fill missing data with the interval mean that was calculated previously i.e. mean.5min
+for(i in 1:length(intervals)){
+  incomplete[incomplete$interval == intervals[i],"steps"] <- mean.5min[which(names(mean.5min)==intervals[i])]
+}
+
+activity.complete[!complete.cases(activity.complete),] <- incomplete # now already completed
+
+new.steps.sum <- sapply(split(activity.complete,days),function(x){sum(x$steps)})
+hist(new.steps.sum,breaks=10,main="Total Daily Steps with Imputed Values",xlab="Daily steps")
+
+# Report mean and median total daily steps
+new.steps.mean <- round(mean(new.steps.sum))
+new.steps.median <- median(new.steps.sum)
+
+print(paste("Total daily steps mean =",new.steps.mean,", median =",new.steps.median))
+```
+
+It is clear that after imputing missing values the total number of steps increased particularly the daily total steps mean increased by **`r new.steps.mean - steps.mean`** and the median increased by **`r new.steps.median - steps.median`** steps. Also, the histogram shape is more close to the normal distribution.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
